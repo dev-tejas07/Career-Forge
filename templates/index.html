@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Career Forge | Build Your Future</title>
+
+    <meta name="description"
+          content="Analyze your resume, discover skill gaps, explore career opportunities, and prepare for interviews with Career Forge.">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="landing-page">
+
+    <!-- Navigation Bar -->
+    <header class="landing-header">
+        <nav class="navbar">
+
+            <a href="/" class="brand">
+                <span class="brand-icon">C</span>
+                <span>Career<span class="brand-highlight">Forge</span></span>
+            </a>
+
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#features">Features</a>
+                <a href="#about">About</a>
+            </div>
+
+            <div class="nav-actions">
+                <a href="/login" class="login-link">Login</a>
+                <a href="/register" class="btn btn-primary nav-cta">
+                    Get Started
+                    <span aria-hidden="true">↗</span>
+                </a>
+            </div>
+
+        </nav>
+    </header>
+
+
+    <!-- Hero Section -->
+    <main>
+
+        <section class="hero-section" id="home">
+
+            <div class="hero-content">
+
+                <div class="hero-badge">
+                    <span class="status-dot"></span>
+                    Your journey to a better career starts here
+                </div>
+
+                <h1>
+                    Build Your Career.<br>
+                    <span class="hero-highlight">Forge Your Future.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Take control of your career with intelligent resume
+                    analysis, personalized skill insights, and interview
+                    preparation — all in one place.
+                </p>
+
+                <div class="hero-buttons">
+                    <a href="/register" class="btn btn-primary hero-cta">
+                        Get Started Free
+                        <span aria-hidden="true">→</span>
+                    </a>
+
+                    <a href="#features" class="btn btn-secondary">
+                        Explore Features
+                    </a>
+                </div>
+
+                <div class="hero-note">
+                    <span class="note-check">✓</span>
+                    Analyze your skills. Prepare with confidence.
+                </div>
+
+            </div>
+
+
+            <!-- Resume Analysis Preview -->
+            <div class="hero-visual">
+
+                <div class="visual-decoration decoration-one"></div>
+                <div class="visual-decoration decoration-two"></div>
+
+                <div class="preview-card">
+
+                    <div class="preview-header">
+                        <div>
+                            <span class="preview-label">CAREER FORGE</span>
+                            <h3>Resume Overview</h3>
+                        </div>
+
+                        <span class="preview-status">Preview</span>
+                    </div>
+
+                    <div class="preview-profile">
+                        <div class="profile-icon">JD</div>
+
+                        <div>
+                            <h4>Software Developer</h4>
+                            <p>Resume analysis preview</p>
+                        </div>
+                    </div>
+
+                    <div class="score-section">
+
+                        <div class="score-heading">
+                            <span>Resume Skill Coverage</span>
+                            <span class="score-indicator">Demo</span>
+                        </div>
+
+                        <div class="score-track">
+                            <div class="score-fill"></div>
+                        </div>
+
+                        <p class="score-caption">
+                            A visual example of resume analysis
+                        </p>
+
+                    </div>
+
+                    <div class="preview-divider"></div>
+
+                    <h4 class="skills-heading">Skills Overview</h4>
+
+                    <div class="preview-skills">
+                        <span>Python</span>
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                        <span>SQL</span>
+                    </div>
+
+                    <div class="preview-insight">
+                        <div class="insight-icon">✦</div>
+
+                        <div>
+                            <h4>Keep growing</h4>
+                            <p>Identify skills to develop for your target role.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="floating-card">
+                    <span class="floating-icon">↗</span>
+
+                    <div>
+                        <strong>Career Growth</strong>
+                        <p>One step at a time</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Features Section -->
+        <section class="features-section" id="features">
+
+            <div class="section-heading">
+
+                <span class="section-eyebrow">WHAT YOU CAN DO</span>
+
+                <h2>Everything you need to move forward.</h2>
+
+                <p>
+                    Practical tools to help you understand your skills,
+                    prepare for opportunities, and plan your next step.
+                </p>
+
+            </div>
+
+
+            <div class="features-grid">
+
+                <article class="feature-card">
+
+                    <div class="feature-icon icon-blue">▤</div>
+
+                    <h3>Resume Analyzer</h3>
+
+                    <p>
+                        Upload your PDF resume and identify skills
+                        mentioned in your profile.
+                    </p>
+
+                    <a href="/register" class="feature-link">
+                        Analyze your resume <span>→</span>
+                    </a>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon icon-purple">◉</div>
+
+                    <h3>ATS Score</h3>
+
+                    <p>
+                        View a prototype score based on detected skills
+                        and the current skill list.
+                    </p>
+
+                    <a href="/register" class="feature-link">
+                        Check your score <span>→</span>
+                    </a>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon icon-green">⌁</div>
+
+                    <h3>Skill Gap Analysis</h3>
+
+                    <p>
+                        Compare your detected skills with the skills
+                        listed for different job roles.
+                    </p>
+
+                    <a href="/register" class="feature-link">
+                        Explore skill gaps <span>→</span>
+                    </a>
+
+                </article>
+
+
+                <article class="feature-card">
+
+                    <div class="feature-icon icon-orange">✳</div>
+
+                    <h3>Interview Preparation</h3>
+
+                    <p>
+                        Practice role-based interview questions and
+                        review suggested answers.
+                    </p>
+
+                    <a href="/register" class="feature-link">
+                        Start preparing <span>→</span>
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- About / How It Works -->
+        <section class="about-section" id="about">
+
+            <div class="about-content">
+
+                <span class="section-eyebrow">SIMPLE BY DESIGN</span>
+
+                <h2>Your career journey, made clearer.</h2>
+
+                <p>
+                    Career Forge brings resume insights, job-role skill
+                    comparisons, and interview preparation together
+                    in one convenient platform.
+                </p>
+
+                <a href="/register" class="btn btn-primary">
+                    Begin Your Journey <span>→</span>
+                </a>
+
+            </div>
+
+
+            <div class="steps-list">
+
+                <div class="step-item">
+
+                    <div class="step-number">01</div>
+
+                    <div>
+                        <h3>Upload your resume</h3>
+                        <p>Start with your existing resume in PDF format.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="step-item">
+
+                    <div class="step-number">02</div>
+
+                    <div>
+                        <h3>Discover your skills</h3>
+                        <p>Review detected skills and job-role comparisons.</p>
+                    </div>
+
+                </div>
+
+
+                <div class="step-item">
+
+                    <div class="step-number">03</div>
+
+                    <div>
+                        <h3>Prepare for opportunities</h3>
+                        <p>Practice interview questions for your target role.</p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Final Call to Action -->
+        <section class="final-cta">
+
+            <div>
+                <span class="section-eyebrow">YOUR NEXT CHAPTER</span>
+
+                <h2>Ready to take the next step?</h2>
+
+                <p>
+                    Start exploring your skills and preparing for your future.
+                </p>
+            </div>
+
+            <a href="/register" class="btn btn-light">
+                Create Your Account <span>→</span>
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+
+        <a href="/" class="brand footer-brand">
+            <span class="brand-icon">C</span>
+            <span>Career<span class="brand-highlight">Forge</span></span>
+        </a>
+
+        <p>
+            Build your skills. Shape your future.
+        </p>
+
+        <span class="footer-copy">
+            © 2026 Career Forge. Built for career growth.
+        </span>
+
+    </footer>
+
+</body>
+</html>

@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Career Forge | Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body class="dashboard-body">
+
+<div class="dashboard">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="sidebar-brand">
+            <div class="brand-icon">CF</div>
+
+            <div>
+                <h2>Career Forge</h2>
+                <span>CAREER DEVELOPMENT</span>
+            </div>
+        </div>
+
+        <div class="sidebar-label">WORKSPACE</div>
+
+        <nav class="sidebar-nav">
+
+            <a href="/dashboard" class="sidebar-link active">
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+            <a href="#resume-section" class="sidebar-link">
+                <span>▤</span>
+                Resume Analyzer
+            </a>
+
+            <a href="#ats-section" class="sidebar-link">
+                <span>◉</span>
+                ATS Score
+            </a>
+
+            <a href="#skills-section" class="sidebar-link">
+                <span>✧</span>
+                My Skills
+            </a>
+
+            <a href="/interview" class="sidebar-link">
+                <span>◎</span>
+                Interview Prep
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="sidebar-help">
+                <div class="help-icon">✦</div>
+
+                <h4>Keep growing!</h4>
+
+                <p>Every new skill brings you closer to your dream job.</p>
+            </div>
+
+            <a href="/logout" class="sidebar-link logout-link">
+                <span>↪</span>
+                Logout
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <!-- TOP BAR -->
+        <header class="dashboard-topbar">
+
+            <div>
+                <span class="page-eyebrow">YOUR CAREER WORKSPACE</span>
+                <h2>Dashboard</h2>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar">
+                    {{ name[0]|upper if name else 'U' }}
+                </div>
+
+                <div class="user-details">
+                    <strong>{{ name }}</strong>
+                    <span>Career Explorer</span>
+                </div>
+            </div>
+
+        </header>
+
+
+        <!-- WELCOME BANNER -->
+        <section class="welcome-card">
+
+            <div class="welcome-content">
+
+                <span class="welcome-badge">
+                    ✦ YOUR NEXT CHAPTER STARTS HERE
+                </span>
+
+                <h1>Welcome back, {{ name }}! </h1>
+
+                <p>
+                    Ready to take the next step in your career?
+                    Analyze your resume, discover your strengths,
+                    and prepare for your next opportunity.
+                </p>
+
+                <a href="#resume-section" class="welcome-button">
+                    Analyze My Resume <span>→</span>
+                </a>
+
+            </div>
+
+            <div class="welcome-decoration">
+                <div class="decoration-circle circle-one"></div>
+                <div class="decoration-circle circle-two"></div>
+
+                <div class="welcome-symbol">
+                    <span>✦</span>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- OVERVIEW -->
+        <section class="dashboard-section">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-eyebrow">YOUR PROGRESS</span>
+                    <h2>Career Overview</h2>
+                </div>
+
+                <span class="overview-status">
+                    ● Dashboard Overview
+                </span>
+            </div>
+
+
+            <div class="overview-grid">
+
+                <!-- ATS SUMMARY -->
+                <article class="overview-card">
+
+                    <div class="overview-card-top">
+                        <div class="overview-icon ats-icon">◉</div>
+                        <span class="overview-label">RESUME SCORE</span>
+                    </div>
+
+                    {% if ats_score is not none %}
+
+                        <h3>{{ ats_score }}<span>%</span></h3>
+
+                        <p>Your current ATS compatibility score.</p>
+
+                        <div class="mini-progress">
+                            <div
+                                class="mini-progress-fill"
+                                data-score="{{ ats_score }}">
+                            </div>
+                        </div>
+
+                    {% else %}
+
+                        <h3>--<span>%</span></h3>
+
+                        <p>Upload your resume to calculate your score.</p>
+
+                        <a href="#resume-section" class="text-action">
+                            Get started →
+                        </a>
+
+                    {% endif %}
+
+                </article>
+
+
+                <!-- SKILLS SUMMARY -->
+                <article class="overview-card">
+
+                    <div class="overview-card-top">
+                        <div class="overview-icon skills-icon">✧</div>
+                        <span class="overview-label">SKILLS DETECTED</span>
+                    </div>
+
+                    <h3>
+                        {{ detected_skills|length if detected_skills else 0 }}
+                    </h3>
+
+                    <p>
+                        Skills identified from your uploaded resume.
+                    </p>
+
+                    <a href="#skills-section" class="text-action">
+                        View your skills →
+                    </a>
+
+                </article>
+
+
+                <!-- INTERVIEW SUMMARY -->
+                <article class="overview-card">
+
+                    <div class="overview-card-top">
+                        <div class="overview-icon interview-icon">◎</div>
+                        <span class="overview-label">INTERVIEW PREP</span>
+                    </div>
+
+                    <h3>Ready?</h3>
+
+                    <p>Practice questions for your target job role.</p>
+
+                    <a href="/interview" class="text-action">
+                        Start practicing →
+                    </a>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESUME UPLOAD -->
+        <section class="dashboard-section" id="resume-section">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-eyebrow">STEP 01</span>
+                    <h2>Resume Analyzer</h2>
+                </div>
+            </div>
+
+
+            <div class="resume-upload-card">
+
+                <div class="upload-illustration">
+                    <div class="upload-file-icon">
+                        <span>PDF</span>
+                        <strong>↑</strong>
+                    </div>
+                </div>
+
+                <div class="upload-information">
+
+                    <h3>Make your resume work for you.</h3>
+
+                    <p>
+                        Upload your resume to discover your skills
+                        and review your resume's ATS score.
+                    </p>
+
+                    <div class="upload-formats">
+                        <span>PDF</span>
+                        <span>DOC</span>
+                        <span>DOCX</span>
+                    </div>
+
+                </div>
+
+
+                <form
+                    action="/upload_resume"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    class="resume-upload-form">
+
+                    <!-- Target Job Role -->
+                    <label for="target-role" class="role-select-label" style="color:rgb(39, 5, 94)">
+                        🎯 Select Your Target Job Role
+                    </label>
+
+                    <select
+                        name="target_role"
+                        id="target-role"
+                        class="target-role-select"
+                        required>
+
+                        <option value="" disabled selected>
+                            Choose a job role
+                        </option>
+
+                        <option value="Frontend Developer">
+                            Frontend Developer
+                        </option>
+
+                        <option value="Backend Developer">
+                            Backend Developer
+                        </option>
+
+                        <option value="Full Stack Developer">
+                            Full Stack Developer
+                        </option>
+
+                        <option value="Python Developer">
+                            Python Developer
+                        </option>
+
+                        <option value="Java Developer">
+                            Java Developer
+                        </option>
+
+                        <option value="Web Developer">
+                            Web Developer
+                        </option>
+
+                        <option value="Software Developer">
+                            Software Developer
+                        </option>
+
+                        <option value="Data Scientist">
+                            Data Scientist
+                        </option>
+
+                    </select>
+
+                    <!-- Resume File -->
+                    <label for="resume-file" class="file-input-label">
+                        Choose Resume
+                    </label>
+
+                    <input
+                        type="file"
+                        name="resume"
+                        id="resume-file"
+                        accept=".pdf,.doc,.docx"
+                        required>
+
+                    <p class="selected-file-name" id="selected-file-name">
+                        No file selected
+                    </p>
+
+                    <!-- Submit -->
+                    <button type="submit" class="upload-submit-button">
+                        Analyze My Resume →
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+        <!-- ATS SCORE -->
+        <section class="dashboard-section" id="ats-section">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-eyebrow">STEP 02</span>
+                    <h2>ATS Score Analysis</h2>
+                </div>
+            </div>
+
+
+            <div class="analysis-card">
+
+                <div class="analysis-main">
+
+                    <div class="analysis-icon">◉</div>
+
+                    <div>
+                        <h3>Your Resume Score</h3>
+
+                        <p>
+                            Review the score generated by your current
+                            resume-analysis system.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                {% if ats_score is not none %}
+
+                    <div class="score-display">
+
+                        <div class="score-number">
+                            {{ ats_score }}<span>%</span>
+                        </div>
+
+                        <div class="score-progress-track">
+                            <div
+                                class="score-progress-fill"
+                                data-score="{{ ats_score }}">
+                            </div>
+                        </div>
+
+                        <p>
+                            Resume analysis completed successfully.
+                        </p>
+
+                    </div>
+
+                {% else %}
+
+                    <div class="score-empty">
+
+                        <div class="empty-score-circle">--</div>
+
+                        <div>
+                            <h4>Your score will appear here</h4>
+
+                            <p>
+                                Upload your resume to get started.
+                            </p>
+                        </div>
+
+                    </div>
+
+                {% endif %}
+
+                <div class="score-note">
+                    <strong>Note:</strong>
+                    This is a prototype ATS score, not a guarantee
+                    of how a real employer's ATS will rank your resume.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- DETECTED SKILLS -->
+        <section class="dashboard-section" id="skills-section">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-eyebrow">STEP 03</span>
+                    <h2>Your Skills</h2>
+                </div>
+
+                {% if detected_skills %}
+                    <span class="skills-count">
+                        {{ detected_skills|length }} detected
+                    </span>
+                {% endif %}
+
+            </div>
+
+
+            <div class="skills-card">
+
+                {% if detected_skills %}
+
+                    <p class="skills-description">
+                        These are the skills detected in your uploaded resume.
+                    </p>
+
+                    <div class="skills-list">
+                        {% for skill in detected_skills %}
+                            <span class="skill-tag">
+                                <span class="skill-check">✓</span>
+                                {{ skill }}
+                            </span>
+                        {% endfor %}
+                    </div>
+
+                    <div class="skills-footer">
+                        <span>✦</span>
+                        Keep your resume updated as you learn new skills.
+                    </div>
+
+                {% else %}
+
+                    <div class="skills-empty">
+
+                        <div class="empty-skills-icon">✧</div>
+
+                        <h3>Your skills will appear here</h3>
+
+                        <p>
+                            Upload your resume so Career Forge can
+                            identify the skills listed in it.
+                        </p>
+
+                        <a href="#resume-section" class="text-action">
+                            Upload your resume →
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+        <!-- SUGGESTED JOB ROLES -->
+<section class="dashboard-section" id="job-roles-section">
+
+    <div class="section-heading">
+        <div>
+            <span class="section-eyebrow">STEP 04</span>
+            <h2>Suggested Job Roles 🎯</h2>
+        </div>
+    </div>
+
+    {% if job_analysis %}
+
+        <div class="job-roles-grid">
+
+            {% for job in job_analysis %}
+
+                <article class="job-role-card">
+
+                    <div class="job-role-header">
+
+                        <div class="job-role-icon">💼</div>
+
+                        <div>
+                            <h3>{{ job.role }}</h3>
+                            <span class="job-role-subtitle">
+                                Based on your resume skills
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="job-match-heading">
+                        <span>Skill Match</span>
+                        <strong>{{ job.match }}%</strong>
+                    </div>
+
+                    <div class="job-match-track">
+                        <div
+                            class="job-match-fill"
+                            data-score="{{ job.match }}">
+                        </div>
+                    </div>
+
+                    <div class="job-role-skills">
+
+                        <h4>✅ Matching Skills</h4>
+
+                        {% if job.matched %}
+
+                            <div class="job-skill-list">
+
+                                {% for skill in job.matched %}
+                                    <span class="job-skill matched-skill">
+                                        {{ skill }}
+                                    </span>
+                                {% endfor %}
+
+                            </div>
+
+                        {% else %}
+
+                            <p>No matching skills detected.</p>
+
+                        {% endif %}
+
+                    </div>
+
+                    <div class="job-role-skills missing-role-skills">
+
+                        <h4>📚 Missing Skills to Learn</h4>
+
+                        {% if job.missing %}
+
+                            <div class="job-skill-list">
+
+                                {% for skill in job.missing %}
+                                    <span class="job-skill missing-skill">
+                                        {{ skill }}
+                                    </span>
+                                {% endfor %}
+
+                            </div>
+
+                        {% else %}
+
+                            <p>Great! All listed role skills were detected.</p>
+
+                        {% endif %}
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="skills-card skills-empty">
+
+            <div class="empty-skills-icon">🎯</div>
+
+            <h3>Your job suggestions will appear here</h3>
+
+            <p>
+                Upload a resume containing skills that match one
+                of the job roles supported by Career Forge.
+            </p>
+
+            <a href="#resume-section" class="text-action">
+                Upload your resume →
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</section>
+
+
+    <!-- MISSING SKILLS OVERVIEW -->
+    <section class="dashboard-section" id="missing-skills-section">
+
+        <div class="section-heading">
+
+            <div>
+                <span class="section-eyebrow">STEP 05</span>
+                <h2>Skills to Improve 📚</h2>
+            </div>
+
+        </div>
+
+        <div class="missing-skills-overview">
+
+            <div class="missing-skills-intro">
+
+                <div class="missing-skills-icon">✦</div>
+
+                <div>
+                    <h3>Build your skill set</h3>
+
+                    <p>
+                        These are skills from your application's current
+                        skill list that were not detected in your resume.
+                    </p>
+                </div>
+
+            </div>
+
+            {% if missing_skills %}
+
+                <div class="missing-skills-list">
+
+                    {% for skill in missing_skills %}
+                        <span class="missing-overview-tag">
+                            <span>＋</span>
+                            {{ skill }}
+                        </span>
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="no-missing-skills">
+                    {% if ats_score is not none %}
+                        🎉 All skills in the application's current skill
+                        list were detected in your resume!
+                    {% else %}
+                        Upload your resume to discover skills to improve.
+                    {% endif %}
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+    <!-- Resume Improvement Analyzer -->
+<section class="improvement-section">
+
+    <div class="section-heading">
+        <h2>✨ Resume Improvement Analyzer</h2>
+        <p>Personalized suggestions to make your resume stronger.</p>
+    </div>
+
+    {% if resume_improvements %}
+
+        <div class="improvement-grid">
+
+            <!-- Resume Strengths -->
+            <div class="improvement-card">
+                <h3>✅ Resume Strengths</h3>
+
+                {% if resume_improvements.strengths %}
+                    <ul>
+                        {% for strength in resume_improvements.strengths %}
+                            <li>{{ strength }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No strengths identified yet.</p>
+                {% endif %}
+            </div>
+
+            <!-- Missing Sections -->
+            <div class="improvement-card">
+                <h3>⚠️ Sections to Review</h3>
+
+                {% if resume_improvements.missing_sections %}
+                    <ul>
+                        {% for section in resume_improvements.missing_sections %}
+                            <li>{{ section }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>All checked resume sections were detected.</p>
+                {% endif %}
+            </div>
+
+            <!-- Suggestions -->
+            <div class="improvement-card">
+                <h3>💡 Improvement Suggestions</h3>
+
+                {% if resume_improvements.suggestions %}
+                    <ul>
+                        {% for suggestion in resume_improvements.suggestions %}
+                            <li>{{ suggestion }}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No suggestions available yet.</p>
+                {% endif %}
+            </div>
+
+            <!-- Job Role Recommendations -->
+            {% if resume_improvements.role_recommendations %}
+                <div class="improvement-card">
+                    <h3>🎯 Career Recommendations</h3>
+
+                    <ul>
+                        {% for recommendation in resume_improvements.role_recommendations %}
+                            <li>{{ recommendation }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+        </div>
+
+    {% else %}
+
+        <div class="improvement-empty">
+            <h3>Ready to improve your resume?</h3>
+            <p>Upload your PDF resume to receive personalized feedback.</p>
+        </div>
+
+    {% endif %}
+
+</section>
+
+        <!-- INTERVIEW PREPARATION -->
+        <section class="dashboard-section">
+
+            <div class="interview-promo">
+
+                <div class="interview-promo-icon">◎</div>
+
+                <div class="interview-promo-content">
+
+                    <span>LEVEL UP YOUR CONFIDENCE</span>
+
+                    <h2>Prepare for your next interview.</h2>
+
+                    <p>
+                        Practice role-based interview questions
+                        and explore suggested answers at your level.
+                    </p>
+
+                </div>
+
+                <a href="/interview" class="interview-promo-button">
+                    Start Preparing →
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- FOOTER -->
+        <footer class="dashboard-footer">
+            <p>
+                © 2026 Career Forge.
+                Build your career. Forge your future.
+            </p>
+        </footer>
+
+    </main>
+
+</div>
+
+
+<!-- PROGRESS BARS AND FILE NAME -->
+<script>
+document.querySelectorAll("[data-score]").forEach(function (bar) {
+    const score = Number(bar.dataset.score);
+
+    if (Number.isFinite(score)) {
+        const safeScore = Math.max(0, Math.min(100, score));
+        bar.style.width = safeScore + "%";
+    }
+});
+
+const resumeInput = document.getElementById("resume-file");
+const fileNameDisplay = document.getElementById("selected-file-name");
+
+if (resumeInput && fileNameDisplay) {
+    resumeInput.addEventListener("change", function () {
+        if (this.files && this.files.length > 0) {
+            fileNameDisplay.textContent = this.files[0].name;
+        } else {
+            fileNameDisplay.textContent = "No file selected";
+        }
+    });
+}
+</script>
+
+</body>
+</html>

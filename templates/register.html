@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Career Forge - Register</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <h1>Career Forge</h1>
+        <h4 style="text-align: center;">Create your account</h4>
+
+        <form action="/register" method="POST" id="register-form">
+
+            <!-- Full Name -->
+            <label for="name">Full Name</label>
+
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Enter your full name"
+                autocomplete="name"
+                maxlength="100"
+                required>
+
+            <!-- Email -->
+            <label for="email">Email</label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                autocomplete="email"
+                maxlength="254"
+                required>
+
+            <!-- Password -->
+            <label for="password">Password</label>
+
+            <div class="password-input-wrapper">
+                    
+                <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a strong password"
+                        autocomplete="new-password"
+                        minlength="9"
+                        maxlength="128"
+                        aria-describedby="password-requirements"
+                        required>
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        data-target="password"
+                        aria-label="Show password"
+                        aria-pressed="false"
+                        title="Show password">
+
+                        <svg viewBox="0 0 24 24"
+                            class="eye-icon"
+                            aria-hidden="true">
+                            <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+
+                    </button>
+            </div>
+
+            <!-- Password Requirements -->
+            <div class="password-requirements" id="password-requirements">
+
+                <p class="requirements-title">
+                    Your password must contain:
+                </p>
+
+                <p class="password-rule" id="rule-length">
+                    <span>○</span> At least 9 characters
+                </p>
+
+                <p class="password-rule" id="rule-uppercase">
+                    <span>○</span> One uppercase letter (A–Z)
+                </p>
+
+                <p class="password-rule" id="rule-lowercase">
+                    <span>○</span> One lowercase letter (a–z)
+                </p>
+
+                <p class="password-rule" id="rule-number">
+                    <span>○</span> One number (0–9)
+                </p>
+
+                <p class="password-rule" id="rule-special">
+                    <span>○</span> One special character (@, #, !, etc.)
+                </p>
+
+            </div>
+
+            <!-- Password Strength -->
+            <div class="password-strength-container">
+
+                <div class="password-strength-track">
+                    <div
+                        id="password-strength-bar"
+                        class="password-strength-bar">
+                    </div>
+                </div>
+
+                <p id="password-strength-text" aria-live="polite">
+                    Password strength: Not entered
+                </p>
+
+            </div>
+
+            <!-- Confirm Password -->
+            <label for="confirm-password">Confirm Password</label>
+
+            <div class="password-input-wrapper">
+                <input
+                    type="password"
+                    id="confirm-password"
+                    name="confirm_password"
+                    placeholder="Re-enter your password"
+                    autocomplete="new-password"
+                    maxlength="128"
+                    required>
+
+                <button
+                    type="button"
+                    class="password-toggle"
+                    data-target="confirm-password"
+                    aria-label="Show confirmation password"
+                    aria-pressed="false"
+                    title="Show password">
+
+                    <svg viewBox="0 0 24 24"
+                        class="eye-icon"
+                        aria-hidden="true">
+                        <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+
+                </button>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" id="register-button">
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="login-text">
+            Already have an account?
+            <a href="/login">Login</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput =
+        document.getElementById("confirm-password");
+
+    const registerForm = document.getElementById("register-form");
+    const registerButton = document.getElementById("register-button");
+
+    const strengthBar =
+        document.getElementById("password-strength-bar");
+
+    const strengthText =
+        document.getElementById("password-strength-text");
+
+    const matchMessage =
+        document.getElementById("password-match-message");
+
+    const rules = {
+        length: {
+            element: document.getElementById("rule-length"),
+            test: password => password.length >= 9
+        },
+        uppercase: {
+            element: document.getElementById("rule-uppercase"),
+            test: password => /[A-Z]/.test(password)
+        },
+        lowercase: {
+            element: document.getElementById("rule-lowercase"),
+            test: password => /[a-z]/.test(password)
+        },
+        number: {
+            element: document.getElementById("rule-number"),
+            test: password => /[0-9]/.test(password)
+        },
+        special: {
+            element: document.getElementById("rule-special"),
+            test: password => /[^A-Za-z0-9]/.test(password)
+        }
+    };
+
+    function updatePasswordRequirements() {
+        const password = passwordInput.value;
+        let passedRules = 0;
+
+        Object.values(rules).forEach(rule => {
+            const passed = rule.test(password);
+            const icon = rule.element.querySelector("span");
+
+            if (passed) {
+                rule.element.classList.add("rule-passed");
+                rule.element.classList.remove("rule-failed");
+                icon.textContent = "✓";
+                passedRules++;
+            } else {
+                rule.element.classList.remove("rule-passed");
+                rule.element.classList.add("rule-failed");
+                icon.textContent = "○";
+            }
+        });
+
+        const strengthLabels = [
+            "Not entered",
+            "Very weak",
+            "Weak",
+            "Fair",
+            "Good",
+            "Meets basic rules"
+        ];
+
+        strengthBar.style.width = (passedRules * 20) + "%";
+        strengthBar.className = "password-strength-bar";
+
+        if (password.length > 0) {
+            strengthBar.classList.add("strength-" + passedRules);
+        }
+
+        strengthText.textContent =
+            "Password strength: " + strengthLabels[passedRules];
+
+        updatePasswordMatch();
+    }
+
+    function updatePasswordMatch() {
+        const password = passwordInput.value;
+        const confirmation = confirmPasswordInput.value;
+
+        if (!confirmation) {
+            matchMessage.textContent = "";
+            matchMessage.className = "";
+            return;
+        }
+
+        if (password === confirmation) {
+            matchMessage.textContent = "✓ Passwords match";
+            matchMessage.className = "password-match-success";
+        } else {
+            matchMessage.textContent = "✗ Passwords do not match";
+            matchMessage.className = "password-match-error";
+        }
+    }
+
+    passwordInput.addEventListener(
+        "input",
+        updatePasswordRequirements
+    );
+
+    confirmPasswordInput.addEventListener(
+        "input",
+        updatePasswordMatch
+    );
+
+    registerForm.addEventListener("submit", function(event) {
+        const password = passwordInput.value;
+
+        const allRulesPassed = Object.values(rules).every(
+            rule => rule.test(password)
+        );
+
+        if (
+            !allRulesPassed ||
+            password.length > 128 ||
+            password !== confirmPasswordInput.value
+        ) {
+            event.preventDefault();
+
+            if (!allRulesPassed || password.length > 128) {
+                passwordInput.focus();
+            } else {
+                confirmPasswordInput.focus();
+            }
+
+            updatePasswordRequirements();
+            updatePasswordMatch();
+
+            return;
+        }
+
+        registerButton.disabled = true;
+        registerButton.textContent = "Creating Account...";
+    });
+
+// Password visibility toggle
+document.querySelectorAll(".password-toggle").forEach(function (button) {
+
+    button.addEventListener("click", function () {
+
+        const targetId = button.dataset.target;
+        const passwordField = document.getElementById(targetId);
+
+        if (!passwordField) {
+            return;
+        }
+
+        const shouldShow = passwordField.type === "password";
+
+        passwordField.type = shouldShow ? "text" : "password";
+
+        button.setAttribute(
+            "aria-pressed",
+            shouldShow ? "true" : "false"
+        );
+
+        button.setAttribute(
+            "aria-label",
+            shouldShow
+                ? "Hide password"
+                : targetId === "confirm-password"
+                    ? "Show confirmation password"
+                    : "Show password"
+        );
+
+        button.setAttribute(
+            "title",
+            shouldShow ? "Hide password" : "Show password"
+        );
+
+        button.innerHTML = shouldShow
+            ? `<svg viewBox="0 0 24 24" class="eye-icon" aria-hidden="true">
+                   <path d="M3 3l18 18"/>
+                   <path d="M10.6 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a16 16 0 0 1-3.2 4.1"/>
+                   <path d="M6.2 6.2C3.5 8.1 2 12 2 12s3.6 7 10 7a10 10 0 0 0 4-.8"/>
+                   <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>
+               </svg>`
+            : `<svg viewBox="0 0 24 24" class="eye-icon" aria-hidden="true">
+                   <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
+                   <circle cx="12" cy="12" r="3"/>
+               </svg>`;
+    });
+
+});
+</script>
+
+</body>
+</html>
